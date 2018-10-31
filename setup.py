@@ -18,25 +18,34 @@ lasso_dir = "lasso/"
 random_dir = "random/"
 gzstream_dir = "gzstream/"
 codeCogs_dir = "codeCogs/"
+dbg_dir = "debug/"
+export_dir = "export/"
 
 source_files = [
     "dEploidIO.cpp", "panel.cpp", "variantIndex.cpp", "txtReader.cpp",
     "vcfReader.cpp", "ibd.cpp", "updateHap.cpp", "mcmc.cpp", "utility.cpp",
     os.path.join(lasso_dir,"dEploidLasso.cpp"),
     os.path.join(lasso_dir, "lasso.cpp"),
+    os.path.join(lasso_dir, "lassoDBG.cpp"),
     os.path.join(random_dir, "fastfunc.cpp"),
     os.path.join(random_dir, "mersenne_twister.cpp"),
     os.path.join(random_dir, "random_generator.cpp"),
-    os.path.join(gzstream_dir, "gzstream.cpp")
+    os.path.join(gzstream_dir, "gzstream.cpp"),
+    os.path.join(dbg_dir, "mcmcDebug.cpp"),
+    os.path.join(dbg_dir, "vcfReaderDebug.cpp"),
+    os.path.join(export_dir, "dEploidIOExport.cpp"),
+    os.path.join(export_dir, "dEploidIOExportPosteriorProb.cpp"),
+    os.path.join(export_dir, "writeMcmcRelated.cpp")
 ]
 
 
 dEploid_module = Extension(
     'dEploid',
     sources=["dEploid-py.cpp"] + [os.path.join(libdir, f) for f in source_files],
-    extra_compile_args=['-std=c++0x', '-lz'],
+    extra_compile_args=['-std=c++0x'],
+    extra_link_args=['-lz'],
     undef_macros=["NDEBUG"],
-    define_macros = [("DDEPLOIDVERSION","todo"), ("DLASSOVERSION","todo"), ("DCOMPILEDATE","todo"), ("DVERSION", "todo")],
+    define_macros = [("VERSION", "\"python\""), ("DEPLOIDVERSION","\"todo\""), ("LASSOVERSION","\"todo\""), ("COMPILEDATE","\"todo\"")],
     include_dirs=["DEploid/"] + includes
 )
 
