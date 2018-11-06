@@ -136,13 +136,6 @@ static PyTypeObject EmptyType = {
 };
 
 
-
-//static PyObject *
-//msprime_get_gsl_version(PyObject *self)
-//{
-    //return Py_BuildValue("ii", GSL_MAJOR_VERSION, GSL_MINOR_VERSION);
-//}
-
 static PyObject *
 dEploid_getProgramVertionStr(PyObject *self)
 {
@@ -157,6 +150,11 @@ dEploid_getLibraryVertionStr(PyObject *self)
 }
 
 
+static PyObject *
+dEploid_getLassoLibraryVertionStr(PyObject *self)
+{
+    return Py_BuildValue("s", LASSOVERSION);
+}
 
 static PyObject *
 dEploid_getCompileTimeStr(PyObject *self)
@@ -169,7 +167,9 @@ static PyMethodDef dEploid_methods[] = {
     {"add", (PyCFunction) dEploid_add, METH_VARARGS,
          "Print a lovely skit to standard output."},
     {"getLibraryVertionStr", (PyCFunction) dEploid_getLibraryVertionStr,
-            METH_NOARGS, "Returns the version of the dEploid C++ library." },
+            METH_NOARGS, "Returns the version of the dEploid git version." },
+    {"getLassoLibraryVertionStr", (PyCFunction) dEploid_getLassoLibraryVertionStr,
+            METH_NOARGS, "Returns the version of the lasso git version." },
     {"getProgramVertionStr", (PyCFunction) dEploid_getProgramVertionStr,
             METH_NOARGS, "Returns the version of the dEploid C++ library." },
     {"getCompileTimeStr", (PyCFunction) dEploid_getCompileTimeStr,
@@ -177,15 +177,6 @@ static PyMethodDef dEploid_methods[] = {
     {NULL, NULL, 0, NULL}   /* sentinel */
 };
 
-
-
-//static PyMethodDef msprime_methods[] = {
-    //{"get_gsl_version", (PyCFunction) msprime_get_gsl_version, METH_NOARGS,
-            //"Returns the version of GSL we are linking against." },
-    //{"get_library_version_str", (PyCFunction) msprime_get_library_version_str,
-            //METH_NOARGS, "Returns the version of the msp C library." },
-    //{NULL}        /* Sentinel */
-//};
 
 static struct PyModuleDef dEploidmodule = {
     PyModuleDef_HEAD_INIT,

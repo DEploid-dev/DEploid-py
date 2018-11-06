@@ -43,9 +43,17 @@ source_files = [
     os.path.join(export_dir, "writeMcmcRelated.cpp")
 ]
 
-compileData = str("\"") + now.strftime("%Y-%m-%d")+ str("\"")
-deploid_v = os.popen("git show HEAD | head -1 | sed -e \"s/commit //g\" | cat").read()
-lasso_v = os.popen("git submodule status | grep DEploid-Lasso-lib | sed -e \"s/ //g\" -e \"s/DEploid.*//\" | cat").read()
+compileData = str("\"") + now.strftime("%Y-%m-%d") + str("\"")
+
+def get_v(obj_dir):
+    cwd = os.getcwd()
+    os.chdir(obj_dir)
+    ret = str("\"") + os.popen("git show HEAD | head -1 | sed -e \"s/commit //g\" | cat").read().strip("\n") + str("\"")
+    os.chdir(cwd)
+    return ret
+
+deploid_v = get_v("lib/")
+lasso_v = get_v("lib/DEploid-Lasso-lib")
 
 
 dEploid_module = Extension(
