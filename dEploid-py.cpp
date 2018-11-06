@@ -144,17 +144,36 @@ static PyTypeObject EmptyType = {
 //}
 
 static PyObject *
-dEploid_get_library_version_str(PyObject *self)
+dEploid_getProgramVertionStr(PyObject *self)
 {
     return Py_BuildValue("s", VERSION);
+}
+
+
+static PyObject *
+dEploid_getLibraryVertionStr(PyObject *self)
+{
+    return Py_BuildValue("s", DEPLOIDVERSION);
+}
+
+
+
+static PyObject *
+dEploid_getCompileTimeStr(PyObject *self)
+{
+    return Py_BuildValue("s", COMPILEDATE);
 }
 
 
 static PyMethodDef dEploid_methods[] = {
     {"add", (PyCFunction) dEploid_add, METH_VARARGS,
          "Print a lovely skit to standard output."},
-    {"get_library_version_str", (PyCFunction) dEploid_get_library_version_str,
+    {"getLibraryVertionStr", (PyCFunction) dEploid_getLibraryVertionStr,
             METH_NOARGS, "Returns the version of the dEploid C++ library." },
+    {"getProgramVertionStr", (PyCFunction) dEploid_getProgramVertionStr,
+            METH_NOARGS, "Returns the version of the dEploid C++ library." },
+    {"getCompileTimeStr", (PyCFunction) dEploid_getCompileTimeStr,
+            METH_NOARGS, "Returns the compilation time." },
     {NULL, NULL, 0, NULL}   /* sentinel */
 };
 

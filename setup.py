@@ -2,10 +2,15 @@
 #import platform
 import os
 import os.path
+import datetime
+
 #from warnings import warn
 
 from setuptools import setup, Extension
 #from setuptools.command.build_ext import build_ext as _build_ext
+
+
+now = datetime.datetime.now()
 
 
 #CONDA_PREFIX = os.getenv("MSP_CONDA_PREFIX", None)
@@ -38,6 +43,10 @@ source_files = [
     os.path.join(export_dir, "writeMcmcRelated.cpp")
 ]
 
+compileData = str("\"") + now.strftime("%Y-%m-%d")+ str("\"")
+deploid_v = os.popen("git show HEAD | head -1 | sed -e \"s/commit //g\" | cat").read()
+lasso_v = os.popen("git submodule status | grep DEploid-Lasso-lib | sed -e \"s/ //g\" -e \"s/DEploid.*//\" | cat").read()
+
 
 dEploid_module = Extension(
     'dEploid',
@@ -45,7 +54,7 @@ dEploid_module = Extension(
     extra_compile_args=['-std=c++0x'],
     extra_link_args=['-lz'],
     undef_macros=["NDEBUG"],
-    define_macros = [("VERSION", "\"python\""), ("DEPLOIDVERSION","\"todo\""), ("LASSOVERSION","\"todo\""), ("COMPILEDATE","\"todo\"")],
+    define_macros = [("VERSION", "\"python\""), ("DEPLOIDVERSION", deploid_v), ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
     include_dirs=["lib/"] + includes
 )
 
