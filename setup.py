@@ -11,7 +11,7 @@ from setuptools import setup, Extension
 #CONDA_PREFIX = os.getenv("MSP_CONDA_PREFIX", None)
 #IS_WINDOWS = platform.system() == "Windows"
 
-libdir = "DEploid/src/"
+libdir = "lib/src/"
 includes = [libdir]
 
 lasso_dir = "lasso/"
@@ -46,7 +46,7 @@ dEploid_module = Extension(
     extra_link_args=['-lz'],
     undef_macros=["NDEBUG"],
     define_macros = [("VERSION", "\"python\""), ("DEPLOIDVERSION","\"todo\""), ("LASSOVERSION","\"todo\""), ("COMPILEDATE","\"todo\"")],
-    include_dirs=["DEploid/"] + includes
+    include_dirs=["lib/"] + includes
 )
 
 setup(
