@@ -5,6 +5,13 @@
 #include "DEploid/src/vcfReader.hpp"
 
 
+typedef struct {
+    PyObject_HEAD
+    bool locked;
+    VcfReader *vcfreader;
+} VcfReaderPy;
+
+
 static PyObject *
 dEploid_add(PyObject *self, PyObject *args)
 {
@@ -37,5 +44,10 @@ static struct PyModuleDef dEploidmodule = {
 PyMODINIT_FUNC
 PyInit_dEploid(void)
 {
-    return PyModule_Create(&dEploidmodule);
+    PyObject *module = PyModule_Create(&dEploidmodule);
+
+
+
+
+    return module;
 }
