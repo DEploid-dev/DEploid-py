@@ -7,4 +7,7 @@ print(dEploid.getLassoLibraryVertionStr())
 print(dEploid.getProgramVertionStr())
 print(dEploid.getCompileTimeStr())
 
-print("add: ", dEploid.add(3, "4"))
+#dEploid.VcfReaderPyType("lib/data/testData/PG0390-C.test.vcf.gz")
+a = dEploid.VcfReaderPyType("lib/data/testData/PG0390-C.test.vcf")
+
+#print("add: ", dEploid.add(3, "4"))
