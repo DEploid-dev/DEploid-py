@@ -159,7 +159,7 @@ static void
 VcfReaderPy_dealloc(VcfReaderPy* self)
 {
     if (self->vcfreader != NULL) {
-        delete self->vcfreader;
+        //delete self->vcfreader;
         PyMem_Free(self->vcfreader);
         self->vcfreader = NULL;
     }
@@ -168,14 +168,17 @@ VcfReaderPy_dealloc(VcfReaderPy* self)
 }
 
 static int
-VcfReaderPy_init(VcfReaderPy *self, string filename)
+VcfReaderPy_init(VcfReaderPy *self, PyObject *args)
 {
     int ret = -1;
     int err;
-    std::cout << "here"<< std::endl;
+
+    int ok;
+    char *s;
+    ok = PyArg_ParseTuple(args, "s", &s);
+    std::string filename(s);
     if (filename.size() > 0){
-        //self->vcfreader = new VcfReader(filename);
-        self->vcfreader = new VcfReader();
+        self->vcfreader = new VcfReader(filename);
     }
     //static char *kwlist[] = {"tree_sequence", "ploidy", "contig_id", NULL};
     //unsigned int ploidy = 1;
@@ -287,6 +290,8 @@ static PyTypeObject VcfReaderPyType = {
     0,                         /* tp_descr_set */
     0,                         /* tp_dictoffset */
     (initproc)VcfReaderPy_init,      /* tp_init */
+    //0,                         /* tp_alloc */
+    //Noddy_new,                 /* tp_new */
 };
 
 

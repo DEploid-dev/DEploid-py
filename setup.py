@@ -68,6 +68,7 @@ dEploid_module = Extension(
 
 setup(
     name="dEploid",
+    packages=['dEploid'],
     description="dEploid CPP module",
     author="Joe Zhu",
     author_email="joe.zhu@bdi.ox.ac.uk",
