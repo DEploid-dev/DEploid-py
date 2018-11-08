@@ -56,7 +56,7 @@ def get_v(obj_dir):
     return ret
 
 
-deploid_v = get_v("lib/")
+dEploid_v = get_v("lib/")
 lasso_v = get_v("lib/DEploid-Lasso-lib")
 
 
@@ -67,7 +67,7 @@ dEploid_module = Extension(
     extra_compile_args=['-std=c++0x'],
     extra_link_args=['-lz'],
     undef_macros=["NDEBUG"],
-    define_macros=[("VERSION", "\"python\""), ("DEPLOIDVERSION", deploid_v),
+    define_macros=[("VERSION", "\"python\""), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
     include_dirs=["lib/"] + includes
 )
