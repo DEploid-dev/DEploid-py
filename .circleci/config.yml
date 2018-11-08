@@ -19,8 +19,9 @@ jobs:
 
     steps:
       - checkout
-          name: update submodule
-          commond: |
+      - run:
+          name: "Pull Submodules"
+          command: |
             git submodule update --init --recursive
 
       # Download and cache dependencies
