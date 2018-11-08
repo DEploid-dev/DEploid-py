@@ -19,6 +19,9 @@ jobs:
 
     steps:
       - checkout
+        name: update submodule
+        commond: |
+          git submodule update --init --recursive
 
       # Download and cache dependencies
       - restore_cache:
