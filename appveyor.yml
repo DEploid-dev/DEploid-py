@@ -5,6 +5,8 @@ image:
   - Visual Studio 2017
 configuration:
   - Release
+platform:
+  - x64
 environment:
   global:
     ZLIB_ROOT: C:\projects\deploid-py\zlib
@@ -20,8 +22,6 @@ environment:
     #- PYTHON: "C:\\Miniconda36"
 
 install:
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "git submodule update --init --recursive --remote"
 
   - IF "%PLATFORM%" == "x86" ( SET CMAKE_GENERATOR="Visual Studio 14 2015")
   - IF "%PLATFORM%" == "x64" ( SET CMAKE_GENERATOR="Visual Studio 14 2015 Win64")
@@ -46,6 +46,8 @@ install:
   - cmake --build . --config %CONFIGURATION% --target install
   - dir ..\myinstall\
 
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "git submodule update --init --recursive --remote"
 
 
 build: false
