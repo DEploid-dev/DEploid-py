@@ -2,7 +2,7 @@ clone_folder: c:\projects\deploid-py
 
 environment:
   global:
-    ZLIB_ROOT: C:\projects\deploid-py\zlib\myinstall
+    ZLIB_ROOT: C:\projects\deploid-py\zlib
 
   matrix:
     - PYTHON: "C:\\Miniconda35-x64"
