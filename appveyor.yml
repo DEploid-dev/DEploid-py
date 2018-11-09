@@ -1,0 +1,28 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Miniconda35-x64"
+
+    - PYTHON: "C:\\Miniconda35"
+
+    - PYTHON: "C:\\Miniconda36-x64"
+
+    - PYTHON: "C:\\Miniconda36"
+
+install:
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "git submodule update --init --recursive --remote"
+
+build: false
+
+test_script:
+  - "conda config --add channels conda-forge"
+  - "conda install --yes --file=requirements.txt"
+
+  # There seems to be an issue here, where we're not using the correct
+  # version of Python.
+  - "SET MSP_CONDA_PREFIX=%PYTHON%"
+  - "python setup.py build_ext --inplace"
+  - "nosetests -vs"
+
+after_test:
+  - "python setup.py bdist_wheel"
