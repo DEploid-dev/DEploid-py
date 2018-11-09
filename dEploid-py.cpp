@@ -2,6 +2,7 @@
 #include "structmember.h" // fix something array have incomplete type
 #include <string>  /* string */
 #include <exception>
+#include <stdexcept>
 
 #include "lib/src/vcfReader.hpp"
 
@@ -131,6 +132,31 @@ static PyTypeObject EmptyType = {
 };
 
 
+PyObject* vectorToList_Double(const vector<double> &data) {
+    PyObject* listObj = PyList_New( data.size() );
+    if (!listObj) throw std::logic_error("Unable to allocate memory for Python list");
+    for (unsigned int i = 0; i < data.size(); i++) {
+        PyObject *num = PyFloat_FromDouble( (double) data[i]);
+        if (!num) {
+            Py_DECREF(listObj);
+            throw std::logic_error("Unable to allocate memory for Python list");
+        }
+        PyList_SET_ITEM(listObj, i, num);
+    }
+    return listObj;
+}
+
+
+PyObject* vectorToList_Str(const vector<string> &data) {
+    PyObject* listObj = PyList_New( data.size() );
+    if (!listObj) throw std::logic_error("Unable to allocate memory for Python list");
+    for (unsigned int i = 0; i < data.size(); i++) {
+        PyObject *s = Py_BuildValue("s", data[i].c_str());
+        PyList_SET_ITEM(listObj, i, s);
+    }
+    return listObj;
+}
+
 
 /*===================================================================
  * VcfReaderPy
@@ -179,6 +205,7 @@ VcfReaderPy_init(VcfReaderPy *self, PyObject *args)
     std::string filename(s);
     if (filename.size() > 0){
         self->vcfreader = new VcfReader(filename);
+        self->vcfreader->finalize();
     }
     //static char *kwlist[] = {"tree_sequence", "ploidy", "contig_id", NULL};
     //unsigned int ploidy = 1;
@@ -222,11 +249,11 @@ VcfReaderPy_init(VcfReaderPy *self, PyObject *args)
 
 
 static PyObject *
-VcfReaderPy_get_header(VcfReaderPy *self)
+VcfReaderPy_get_vcfheader(VcfReaderPy *self)
 {
     PyObject *ret = NULL;
     int err;
-    char *header;
+    //char *header;
 
     if (VcfReaderPy_check_state(self) != 0) {
         goto out;
@@ -236,11 +263,55 @@ VcfReaderPy_get_header(VcfReaderPy *self)
         //handle_library_error(err);
         //goto out;
     //}
-    ret = Py_BuildValue("s", header);
+    //ret = Py_BuildValue("s", header);
+    ret = vectorToList_Str(self->vcfreader->headerLines);
 out:
     return ret;
 }
 
+
+static PyObject *
+VcfReaderPy_get_refcount(VcfReaderPy *self)
+{
+    PyObject *ret = NULL;
+    int err;
+    //char *header;
+
+    if (VcfReaderPy_check_state(self) != 0) {
+        goto out;
+    }
+    //err = vcf_converter_get_header(self->vcf_converter, &header);
+    //if (err != 0) {
+        //handle_library_error(err);
+        //goto out;
+    //}
+    //ret = Py_BuildValue("s", header);
+    ret = vectorToList_Double(self->vcfreader->refCount);
+out:
+    return ret;
+}
+
+
+static PyObject *
+VcfReaderPy_get_altcount(VcfReaderPy *self)
+{
+    PyObject *ret = NULL;
+    int err;
+    //char *header;
+
+    if (VcfReaderPy_check_state(self) != 0) {
+        goto out;
+    }
+    //err = vcf_converter_get_header(self->vcf_converter, &header);
+    //if (err != 0) {
+        //handle_library_error(err);
+        //goto out;
+    //}
+    //ret = Py_BuildValue("s", header);
+    ret = vectorToList_Double(self->vcfreader->altCount);
+out:
+    return ret;
+}
 
 static PyMemberDef VcfReaderPy_members[] = {
     {NULL}  /* Sentinel */
@@ -248,7 +319,11 @@ static PyMemberDef VcfReaderPy_members[] = {
 
 
 static PyMethodDef VcfReaderPy_methods[] = {
-    {"get_header", (PyCFunction) VcfReaderPy_get_header, METH_NOARGS,
+    {"get_vcfheader", (PyCFunction) VcfReaderPy_get_vcfheader, METH_NOARGS,
+            "Returns the VCF header as plain text." },
+    {"get_refCount", (PyCFunction) VcfReaderPy_get_refcount, METH_NOARGS,
+            "Returns the VCF header as plain text." },
+    {"get_altCount", (PyCFunction) VcfReaderPy_get_altcount, METH_NOARGS,
             "Returns the VCF header as plain text." },
     {NULL}  /* Sentinel */
 };
