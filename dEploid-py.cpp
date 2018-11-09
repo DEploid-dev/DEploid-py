@@ -252,19 +252,23 @@ static PyObject *
 VcfReaderPy_get_vcfheader(VcfReaderPy *self)
 {
     PyObject *ret = NULL;
-    int err;
-    //char *header;
-
     if (VcfReaderPy_check_state(self) != 0) {
         goto out;
     }
-    //err = vcf_converter_get_header(self->vcf_converter, &header);
-    //if (err != 0) {
-        //handle_library_error(err);
-        //goto out;
-    //}
-    //ret = Py_BuildValue("s", header);
     ret = vectorToList_Str(self->vcfreader->headerLines);
+out:
+    return ret;
+}
+
+
+static PyObject *
+VcfReaderPy_get_vqslod(VcfReaderPy *self)
+{
+    PyObject *ret = NULL;
+    if (VcfReaderPy_check_state(self) != 0) {
+        goto out;
+    }
+    ret = vectorToList_Double(self->vcfreader->vqslod);
 out:
     return ret;
 }
@@ -274,18 +278,9 @@ static PyObject *
 VcfReaderPy_get_refcount(VcfReaderPy *self)
 {
     PyObject *ret = NULL;
-    int err;
-    //char *header;
-
     if (VcfReaderPy_check_state(self) != 0) {
         goto out;
     }
-    //err = vcf_converter_get_header(self->vcf_converter, &header);
-    //if (err != 0) {
-        //handle_library_error(err);
-        //goto out;
-    //}
-    //ret = Py_BuildValue("s", header);
     ret = vectorToList_Double(self->vcfreader->refCount);
 out:
     return ret;
@@ -296,22 +291,14 @@ static PyObject *
 VcfReaderPy_get_altcount(VcfReaderPy *self)
 {
     PyObject *ret = NULL;
-    int err;
-    //char *header;
-
     if (VcfReaderPy_check_state(self) != 0) {
         goto out;
     }
-    //err = vcf_converter_get_header(self->vcf_converter, &header);
-    //if (err != 0) {
-        //handle_library_error(err);
-        //goto out;
-    //}
-    //ret = Py_BuildValue("s", header);
     ret = vectorToList_Double(self->vcfreader->altCount);
 out:
     return ret;
 }
+
 
 static PyMemberDef VcfReaderPy_members[] = {
     {NULL}  /* Sentinel */
@@ -322,13 +309,16 @@ static PyMethodDef VcfReaderPy_methods[] = {
     {"get_vcfheader", (PyCFunction) VcfReaderPy_get_vcfheader, METH_NOARGS,
             "Returns the VCF header as plain text." },
     {"get_refCount", (PyCFunction) VcfReaderPy_get_refcount, METH_NOARGS,
-            "Returns the VCF header as plain text." },
+            "Returns VCF reference allele count." },
     {"get_altCount", (PyCFunction) VcfReaderPy_get_altcount, METH_NOARGS,
-            "Returns the VCF header as plain text." },
+            "Returns VCF alternative allele count." },
+    {"get_vqslod", (PyCFunction) VcfReaderPy_get_vqslod, METH_NOARGS,
+            "Returns VCF SNP VQSLOD scores." },
     {NULL}  /* Sentinel */
 };
 
-static PyTypeObject VcfReaderPyType = {
+
+static PyTypeObject Vcf = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "_msprime.VcfReaderPy",             /* tp_name */
     sizeof(VcfReaderPy),             /* tp_basicsize */
@@ -368,15 +358,6 @@ static PyTypeObject VcfReaderPyType = {
     //0,                         /* tp_alloc */
     //Noddy_new,                 /* tp_new */
 };
-
-
-
-
-
-
-
-
-
 
 
 
@@ -659,13 +640,13 @@ PyInit_dEploid(void)
 {
     PyObject *module = PyModule_Create(&dEploidmodule);
 
-    /* VcfReaderPyType type */
-    VcfReaderPyType.tp_new = PyType_GenericNew;
-    if (PyType_Ready(&VcfReaderPyType) < 0) {
+    /* Vcf type */
+    Vcf.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&Vcf) < 0) {
         INITERROR;
     }
-    Py_INCREF(&VcfReaderPyType);
-    PyModule_AddObject(module, "VcfReaderPyType", (PyObject *) &VcfReaderPyType);
+    Py_INCREF(&Vcf);
+    PyModule_AddObject(module, "Vcf", (PyObject *) &Vcf);
 
 
     /* NoddyType type */
