@@ -67,6 +67,12 @@ jobs:
            . venv/bin/activate
            python3 dEploid_demo.py
 
+      - run:
+          name: test pip install
+          command: |
+           . venv/bin/activate
+           pip install dEploid
+
       - store_artifacts:
           path: test-reports
           destination: test-reports

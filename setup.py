@@ -60,8 +60,8 @@ dEploid_v = get_v("lib/")
 lasso_v = get_v("lib/DEploid-Lasso-lib")
 
 
-dEploid_module = Extension(
-    'dEploid',
+_dEploid_module = Extension(
+    '_dEploid',
     sources=["dEploid-py.cpp"] + [
         os.path.join(libdir, f) for f in source_files],
     extra_compile_args=['-std=c++0x'],
@@ -77,6 +77,25 @@ setup(
     packages=['dEploid'],
     description="dEploid CPP module",
     author="Joe Zhu",
+    version="0.6.0.1",
     author_email="joe.zhu@bdi.ox.ac.uk",
     url="https://github.com/DEploid-dev/DEploid-py",
-    ext_modules=[dEploid_module])
+    ext_modules=[_dEploid_module],
+    keywords=["deconvolution", "mixed infection"],
+    license="GNU GPLv3+",
+    platforms=["POSIX"],
+    classifiers=[
+        "Programming Language :: C++",
+        "Programming Language :: C",
+        "Programming Language :: Python",
+        "Development Status :: 2 - Pre-Alpha",
+        "Environment :: Other Environment",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "Operating System :: POSIX",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+    ],
+)

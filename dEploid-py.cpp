@@ -621,7 +621,7 @@ static PyMethodDef dEploid_methods[] = {
 
 static struct PyModuleDef dEploidmodule = {
     PyModuleDef_HEAD_INIT,
-    "dEploid",
+    "_dEploid",
     NULL,
     -1,
     dEploid_methods,
@@ -636,9 +636,13 @@ static struct PyModuleDef dEploidmodule = {
 #endif
 
 PyMODINIT_FUNC
-PyInit_dEploid(void)
+PyInit__dEploid(void)
 {
+#if PY_MAJOR_VERSION >= 3
     PyObject *module = PyModule_Create(&dEploidmodule);
+#else
+    PyObject *module = Py_InitModule3("_dEploid", dEploid_methods, MODULE_DOC);
+#endif
 
     /* Vcf type */
     Vcf.tp_new = PyType_GenericNew;

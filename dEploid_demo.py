@@ -1,14 +1,14 @@
-import dEploid
+import _dEploid
 from matplotlib import pyplot
 
 print("Hello from dEploid")
-print("add: ", dEploid.add(3, 4))
-print(dEploid.getLibraryVertionStr())
-print(dEploid.getLassoLibraryVertionStr())
-print(dEploid.getProgramVertionStr())
-print(dEploid.getCompileTimeStr())
+print("add: ", _dEploid.add(3, 4))
+print(_dEploid.getLibraryVertionStr())
+print(_dEploid.getLassoLibraryVertionStr())
+print(_dEploid.getProgramVertionStr())
+print(_dEploid.getCompileTimeStr())
 
-a = dEploid.Vcf("lib/data/exampleData/PG0390-C.eg.vcf.gz")
+a = _dEploid.Vcf("lib/data/exampleData/PG0390-C.eg.vcf.gz")
 
 a.get_vcfheader()
 
