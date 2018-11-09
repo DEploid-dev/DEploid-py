@@ -58,8 +58,8 @@ def get_v(obj_dir):
 
 #dEploid_v = get_v("lib/")
 #lasso_v = get_v("lib/DEploid-Lasso-lib")
-dEploid_v = "dEploid-cpp"
-lasso_v = "lasso-cpp"
+dEploid_v = "\"dEploid-cpp\""
+lasso_v = "\"lasso-cpp\""
 
 
 _dEploid_module = Extension(
@@ -79,7 +79,7 @@ setup(
     packages=['dEploid'],
     description="dEploid CPP module",
     author="Joe Zhu",
-    version="0.6.0.2",
+    version="0.6.0.3",
     author_email="joe.zhu@bdi.ox.ac.uk",
     url="https://github.com/DEploid-dev/DEploid-py",
     ext_modules=[_dEploid_module],
