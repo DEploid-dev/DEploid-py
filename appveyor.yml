@@ -1,12 +1,13 @@
 environment:
   matrix:
     - PYTHON: "C:\\Miniconda35-x64"
+      ZLIB_VERSION: 1.2.11
 
-    - PYTHON: "C:\\Miniconda35"
+    #- PYTHON: "C:\\Miniconda35"
 
-    - PYTHON: "C:\\Miniconda36-x64"
+    #- PYTHON: "C:\\Miniconda36-x64"
 
-    - PYTHON: "C:\\Miniconda36"
+    #- PYTHON: "C:\\Miniconda36"
 
 install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
