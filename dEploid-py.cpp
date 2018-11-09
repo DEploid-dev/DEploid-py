@@ -615,6 +615,7 @@ dEploid_getLassoLibraryVertionStr(PyObject *self)
     return Py_BuildValue("s", LASSOVERSION);
 }
 
+
 static PyObject *
 dEploid_getCompileTimeStr(PyObject *self)
 {
