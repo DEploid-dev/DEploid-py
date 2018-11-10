@@ -79,7 +79,7 @@ setup(
     packages=['dEploid'],
     description="dEploid CPP module",
     author="Joe Zhu",
-    version="0.6.0.4",
+    version="0.6.0.5",
     author_email="joe.zhu@bdi.ox.ac.uk",
     url="https://github.com/DEploid-dev/DEploid-py",
     ext_modules=[_dEploid_module],
