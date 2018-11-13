@@ -13,6 +13,10 @@ import os.path
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
 
+#from distutils.core import setup
+#from distutils.extension import Extension
+
+
 
 now = datetime.datetime.now()
 ZLIB_PREFIX = os.getenv("ZLIB_PREFIX", None)
@@ -107,6 +111,7 @@ _dEploid_module = Extension(
         os.path.join(libdir, f) for f in source_files],
     extra_compile_args=['-std=c++11'],
     extra_link_args=['-lz'],
+    libraries=[],
     undef_macros=["NDEBUG"],
     define_macros=[("VERSION", vv), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
