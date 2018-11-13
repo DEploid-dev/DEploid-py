@@ -54,7 +54,7 @@ includes = [libdir]
                 #"C:/projects/deploid-py/lib/src/export/"]
 
 
-lasso_dir = "lasso/"
+lasso_dir = "lasso/src/"
 random_dir = "random/"
 gzstream_dir = "gzstream/"
 codeCogs_dir = "codeCogs/"
