@@ -49,6 +49,15 @@ codeCogs_dir = "codeCogs/"
 dbg_dir = "debug/"
 export_dir = "export/"
 
+if IS_WINDOWS:
+    lasso_dir = "lib/src/lasso/"
+    random_dir = "lib/src/random/"
+    gzstream_dir = "lib/src/gzstream/"
+    codeCogs_dir = "lib/src/codeCogs/"
+    dbg_dir = "lib/src/debug/"
+    export_dir = "lib/src/export/"
+
+
 configurator = PathConfigurator()
 print(configurator.include_dirs)
 source_files = [

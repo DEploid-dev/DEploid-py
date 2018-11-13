@@ -416,7 +416,7 @@ static PyMethodDef dEploid_methods[] = {
             METH_NOARGS, "Returns the version of the dEploid C++ library." },
     {"getCompileTimeStr", (PyCFunction) dEploid_getCompileTimeStr,
             METH_NOARGS, "Returns the compilation time." },
-    {NULL, NULL, 0, NULL}   /* sentinel */
+    {NULL}        /* Sentinel */
 };
 
 
