@@ -66,6 +66,7 @@ install:
 build_script:
 - ps: |
     "SET ZLIB_PREFIX=%ZLIB_ROOT%"
+    echo %ZLIB_PREFIX%
     if ($env:PYTHON) {
       pip install -r requirements.txt
       python setup.py build_ext --inplace
