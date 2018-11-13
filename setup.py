@@ -13,7 +13,7 @@ from setuptools import setup, Extension
 
 
 now = datetime.datetime.now()
-CONDA_PREFIX = os.getenv("DEPLOID_CONDA_PREFIX", None)
+ZLIB_PREFIX = os.getenv("ZLIB_PREFIX", None)
 IS_WINDOWS = platform.system() == "Windows"
 
 class PathConfigurator(object):
@@ -30,8 +30,8 @@ class PathConfigurator(object):
             #warn("Error occured getting GSL path config: {}".format(e))
         ## If the conda prefix is defined, then we are compiling in a conda
         ## context. All include and lib paths should come from within this prefix.
-        if CONDA_PREFIX is not None:
-            prefix = CONDA_PREFIX
+        if ZLIB_PREFIX is not None:
+            prefix = ZLIB_PREFIX
             if IS_WINDOWS:
                 prefix = os.path.join(prefix, "Library")
             self.library_dirs.append(os.path.join(prefix, "lib"))
@@ -49,6 +49,7 @@ dbg_dir = "debug/"
 export_dir = "export/"
 
 configurator = PathConfigurator()
+print(configurator.include_dirs)
 source_files = [
     "dEploidIO.cpp", "panel.cpp", "variantIndex.cpp", "txtReader.cpp",
     "vcfReader.cpp", "ibd.cpp", "updateHap.cpp", "mcmc.cpp", "utility.cpp",

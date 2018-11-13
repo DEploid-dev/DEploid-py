@@ -1,6 +1,19 @@
+clone_folder: c:\projects\deploid-py
+image:
+  - Visual Studio 2015
+  # if 2015 works, this should work too
+  #- Visual Studio 2017
+configuration:
+  - Release
+platform:
+  - x64
 environment:
+  global:
+    ZLIB_ROOT: C:\projects\deploid-py\zlib\myinstall\
+
   matrix:
     - PYTHON: "C:\\Miniconda35-x64"
+      ZLIB_VERSION: 1.2.11
 
     #- PYTHON: "C:\\Miniconda35"
 
@@ -12,20 +25,39 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "git submodule update --init --recursive --remote"
 
+  - IF "%PLATFORM%" == "x86" ( SET CMAKE_GENERATOR="Visual Studio 14 2015")
+  - IF "%PLATFORM%" == "x64" ( SET CMAKE_GENERATOR="Visual Studio 14 2015 Win64")
+
+  - echo %PLATFORM%
+  - echo %CMAKE_GENERATOR%
+  - echo %configuration%
+  - echo %APPVEYOR_BUILD_FOLDER%
+  - echo %cd%
+  # zlib
+  # TODO check out http://stackoverflow.com/questions/10507893/libzip-with-visual-studio-2010
+  - cd C:\projects\deploid-py
+  - git clone https://github.com/madler/zlib
+  - cd zlib
+  - git checkout v1.2.8
+  - echo %cd%
+  - mkdir build
+  - mkdir myinstall
+  - cd build
+  - cmake -G %CMAKE_GENERATOR% -DCMAKE_INSTALL_PREFIX=%ZLIB_ROOT% ..
+  - cmake --build . --config %CONFIGURATION%
+  - cmake --build . --config %CONFIGURATION% --target install
+  - dir ..\myinstall\
+  - cd C:\projects\deploid-py
+
 build: false
 
 test_script:
   - "conda config --add channels conda-forge"
-  #- "conda install --yes --file=requirements/conda-minimal.txt"
-  #- "pip install svgwrite"  # svgwrite isn't available in conda
-  #- "pip install kastore"
-  #- "pip install PyVCF"
-  #- "pip install newick"
-  #- "pip install python_jsonschema_objects"
+  - "conda install --yes --file=requirements.txt"
 
   # There seems to be an issue here, where we're not using the correct
   # version of Python.
-  - "SET MSP_CONDA_PREFIX=%PYTHON%"
+  - "SET ZLIB_PREFIX=%ZLIB_ROOT%"
   - "python setup.py build_ext --inplace"
   - "nosetests -vs"
 
