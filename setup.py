@@ -83,18 +83,24 @@ def get_v(obj_dir):
 
 #dEploid_v = get_v("lib/")
 #lasso_v = get_v("lib/DEploid-Lasso-lib")
+vv = "\"python\""
 dEploid_v = "\"dEploid-cpp\""
 lasso_v = "\"lasso-cpp\""
+
+if IS_WINDOWS:
+    vv = "\\\"python\\\""
+    dEploid_v = "\\\"dEploid-cpp\\\""
+    lasso_v = "\\\"lasso-cpp\\\""
 
 
 _dEploid_module = Extension(
     '_dEploid',
     sources=["dEploid-py.cpp"] + [
         os.path.join(libdir, f) for f in source_files],
-    extra_compile_args=['-std=c++0x'],
+    extra_compile_args=['-std=c++11'],
     extra_link_args=['-lz'],
     undef_macros=["NDEBUG"],
-    define_macros=[("VERSION", "\"python\""), ("DEPLOIDVERSION", dEploid_v),
+    define_macros=[("VERSION", vv), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
     include_dirs=["lib/"] + includes + configurator.include_dirs,
     #library_dirs=configurator.library_dirs,
