@@ -10,6 +10,10 @@ platform:
 environment:
   global:
     ZLIB_ROOT: C:\projects\deploid-py\zlib\myinstall\
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    WITH_COMPILER: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_compiler.cmd"
 
   matrix:
     - PYTHON: "C:\\Miniconda35-x64"
@@ -22,6 +26,7 @@ environment:
     #- PYTHON: "C:\\Miniconda36"
 
 install:
+  - "powershell appveyor\\install.ps1"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "git submodule update --init --recursive"
 
