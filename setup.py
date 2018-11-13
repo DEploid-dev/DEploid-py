@@ -33,7 +33,8 @@ class PathConfigurator(object):
         if ZLIB_PREFIX is not None:
             prefix = ZLIB_PREFIX
             if IS_WINDOWS:
-                prefix = os.path.join(prefix, "Library")
+                prefix = prefix
+                #prefix = os.path.join(prefix, "Library")
             self.library_dirs.append(os.path.join(prefix, "lib"))
             self.include_dirs.append(os.path.join(prefix, "include"))
 
