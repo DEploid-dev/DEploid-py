@@ -17,6 +17,19 @@ from setuptools.command.build_ext import build_ext as _build_ext
 #from distutils.extension import Extension
 
 
+class get_pybind_include(object):
+    """Helper class to determine the pybind11 include path
+    The purpose of this class is to postpone importing pybind11
+    until it is actually installed, so that the ``get_include()``
+    method can be invoked. """
+
+    def __init__(self, user=False):
+        self.user = user
+
+    def __str__(self):
+        import pybind11
+        return pybind11.get_include(self.user)
+
 
 now = datetime.datetime.now()
 ZLIB_PREFIX = os.getenv("ZLIB_PREFIX", None)
@@ -118,7 +131,8 @@ _dEploid_module = Extension(
     undef_macros=["NDEBUG"],
     define_macros=[("VERSION", vv), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
-    include_dirs=["lib/"] + includes + [
+    include_dirs=[get_pybind_include(),
+            get_pybind_include(user=True)] + ["lib/"] + includes + [
         os.path.join(libdir, lasso_dir)] + [
         os.path.join(libdir, random_dir)] + [
         os.path.join(libdir, gzstream_dir)] + [
