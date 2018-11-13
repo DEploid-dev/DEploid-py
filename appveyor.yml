@@ -1,8 +1,8 @@
 clone_folder: c:\projects\deploid-py
 image:
-  - Visual Studio 2015
+  #- Visual Studio 2015
   # if 2015 works, this should work too
-  #- Visual Studio 2017
+  - Visual Studio 2017
 configuration:
   - Release
 platform:
