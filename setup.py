@@ -127,7 +127,7 @@ _dEploid_module = Extension(
         os.path.join(libdir, f) for f in source_files],
     extra_compile_args=cpp11option,
     extra_link_args=['-lz'],
-    libraries=[],
+    libraries=['z'],
     undef_macros=["NDEBUG"],
     define_macros=[("VERSION", vv), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
