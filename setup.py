@@ -104,12 +104,15 @@ if IS_WINDOWS:
     dEploid_v = "\\\"dEploid-cpp\\\""
     lasso_v = "\\\"lasso-cpp\\\""
 
+cpp11option = ['-std=c++11']
+if IS_WINDOWS:
+    cpp11option = ['-std:c++11']
 
 _dEploid_module = Extension(
     '_dEploid',
     sources=["dEploid-py.cpp"] + [
         os.path.join(libdir, f) for f in source_files],
-    extra_compile_args=['-std=c++11'],
+    extra_compile_args=cpp11option,
     extra_link_args=['-lz'],
     libraries=[],
     undef_macros=["NDEBUG"],
