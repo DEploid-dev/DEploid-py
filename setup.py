@@ -3,6 +3,8 @@
 import os
 import os.path
 import datetime
+import platform
+
 
 # from warnings import warn
 
@@ -11,10 +13,30 @@ from setuptools import setup, Extension
 
 
 now = datetime.datetime.now()
+CONDA_PREFIX = os.getenv("DEPLOID_CONDA_PREFIX", None)
+IS_WINDOWS = platform.system() == "Windows"
 
+class PathConfigurator(object):
+    """
+    A class to attempt configuration of the compile search paths
+    on various platforms.
+    """
+    def __init__(self):
+        self.include_dirs = []
+        self.library_dirs = []
+        #try:
+            #self._configure_gsl()
+        #except OSError as e:
+            #warn("Error occured getting GSL path config: {}".format(e))
+        ## If the conda prefix is defined, then we are compiling in a conda
+        ## context. All include and lib paths should come from within this prefix.
+        if CONDA_PREFIX is not None:
+            prefix = CONDA_PREFIX
+            if IS_WINDOWS:
+                prefix = os.path.join(prefix, "Library")
+            self.library_dirs.append(os.path.join(prefix, "lib"))
+            self.include_dirs.append(os.path.join(prefix, "include"))
 
-# CONDA_PREFIX = os.getenv("MSP_CONDA_PREFIX", None)
-# IS_WINDOWS = platform.system() == "Windows"
 
 libdir = "lib/src/"
 includes = [libdir]
@@ -26,6 +48,7 @@ codeCogs_dir = "codeCogs/"
 dbg_dir = "debug/"
 export_dir = "export/"
 
+configurator = PathConfigurator()
 source_files = [
     "dEploidIO.cpp", "panel.cpp", "variantIndex.cpp", "txtReader.cpp",
     "vcfReader.cpp", "ibd.cpp", "updateHap.cpp", "mcmc.cpp", "utility.cpp",
@@ -71,7 +94,8 @@ _dEploid_module = Extension(
     undef_macros=["NDEBUG"],
     define_macros=[("VERSION", "\"python\""), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
-    include_dirs=["lib/"] + includes
+    include_dirs=["lib/"] + includes + configurator.include_dirs,
+    #library_dirs=configurator.library_dirs,
 )
 
 setup(
