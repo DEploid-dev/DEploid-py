@@ -1,15 +1,17 @@
 # import subprocess
 # import platform
+#from __future__ import division
+#from __future__ import print_function
+
+import datetime
+#import subprocess
+import platform
 import os
 import os.path
-import datetime
-import platform
-
-
-# from warnings import warn
+#from warnings import warn
 
 from setuptools import setup, Extension
-# from setuptools.command.build_ext import build_ext as _build_ext
+from setuptools.command.build_ext import build_ext as _build_ext
 
 
 now = datetime.datetime.now()
@@ -43,7 +45,7 @@ libdir = "lib/src/"
 includes = [libdir]
 
 if IS_WINDOWS:
-    includes = [libdir, "C:\\projects\\deploid-py\\lib\\src\\lasso\\", "C:\\projects\\deploid-py\\lib\\src\\random\\",
+    includes = [libdir, "C:\\projects\\deploid-py\\lib\\src\\", "C:\\projects\\deploid-py\\lib\\src\\lasso\\", "C:\\projects\\deploid-py\\lib\\src\\random\\",
                 "C:\\projects\\deploid-py\\lib\\src\\gzstream\\", "C:\\projects\\deploid-py\\lib\\src\\codeCogs\\", "C:\\projects\\deploid-py\\lib\\src\\debug\\",
                 "C:\\projects\\deploid-py\\lib\\src\\export\\"]
 
