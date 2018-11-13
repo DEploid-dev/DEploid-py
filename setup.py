@@ -118,8 +118,8 @@ if IS_WINDOWS:
     lasso_v = "\\\"lasso-cpp\\\""
 
 cpp11option = ['-std=c++11']
-if IS_WINDOWS:
-    cpp11option = ['-std:c++11']
+#if IS_WINDOWS:
+    #cpp11option = ['-std:c++11']
 
 _dEploid_module = Extension(
     '_dEploid',

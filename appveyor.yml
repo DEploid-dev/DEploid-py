@@ -65,6 +65,7 @@ build_script:
 - ps: |
     if ($env:PYTHON) {
       pip install -r requirements.txt
+      "SET ZLIB_PREFIX=%ZLIB_ROOT%"
       python setup.py build_ext --inplace
       #python setup.py sdist
       #pip install --verbose dist\python_example-0.0.1.tar.gz
