@@ -42,21 +42,21 @@ class PathConfigurator(object):
 libdir = "lib/src/"
 includes = [libdir]
 
+if IS_WINDOWS:
+    includes += "lib/src/lasso/"
+    includes += "lib/src/random/"
+    includes += "lib/src/gzstream/"
+    includes += "lib/src/codeCogs/"
+    includes += "lib/src/debug/"
+    includes += "lib/src/export/"
+
+
 lasso_dir = "lasso/"
 random_dir = "random/"
 gzstream_dir = "gzstream/"
 codeCogs_dir = "codeCogs/"
 dbg_dir = "debug/"
 export_dir = "export/"
-
-if IS_WINDOWS:
-    lasso_dir = "lib/src/lasso/"
-    random_dir = "lib/src/random/"
-    gzstream_dir = "lib/src/gzstream/"
-    codeCogs_dir = "lib/src/codeCogs/"
-    dbg_dir = "lib/src/debug/"
-    export_dir = "lib/src/export/"
-
 
 configurator = PathConfigurator()
 print(configurator.include_dirs)

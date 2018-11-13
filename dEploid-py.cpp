@@ -427,7 +427,7 @@ static PyMethodDef dEploid_methods[] = {
 static struct PyModuleDef dEploidmodule = {
     PyModuleDef_HEAD_INIT,
     "_dEploid",
-    NULL,
+    MODULE_DOC,
     -1,
     dEploid_methods,
     NULL, NULL, NULL, NULL
