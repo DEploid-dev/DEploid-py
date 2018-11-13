@@ -1,5 +1,7 @@
 version: '{build}'
 image: Visual Studio 2015
+configuration:
+  - Release
 platform:
 - x86
 #- x64
@@ -26,7 +28,7 @@ install:
   - echo %PLATFORM%
   - echo %CMAKE_GENERATOR%
   - echo %configuration%
-  - echo %APPVEYOR_BUILD_FOLDER%
+  - echo %ZLIB_ROOT%
 
   - echo %cd%
 
@@ -63,9 +65,9 @@ install:
       }
 build_script:
 - ps: |
+    "SET ZLIB_PREFIX=%ZLIB_ROOT%"
     if ($env:PYTHON) {
       pip install -r requirements.txt
-      "SET ZLIB_PREFIX=%ZLIB_ROOT%"
       python setup.py build_ext --inplace
       #python setup.py sdist
       #pip install --verbose dist\python_example-0.0.1.tar.gz
