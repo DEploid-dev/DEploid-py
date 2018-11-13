@@ -43,12 +43,9 @@ libdir = "lib/src/"
 includes = [libdir]
 
 if IS_WINDOWS:
-    includes += "lib/src/lasso/"
-    includes += "lib/src/random/"
-    includes += "lib/src/gzstream/"
-    includes += "lib/src/codeCogs/"
-    includes += "lib/src/debug/"
-    includes += "lib/src/export/"
+    includes = [libdir, "lib/src/lasso/", "lib/src/random/",
+                "lib/src/gzstream/", "lib/src/codeCogs/", "lib/src/debug/",
+                "lib/src/export/"]
 
 
 lasso_dir = "lasso/"
