@@ -56,7 +56,7 @@ install:
   #- export MSP_CONDA_PREFIX="$HOME/miniconda/envs/test-environment"
 
   #- conda install --yes --file=requirements/conda-minimal.txt
-  conda install --yes --file=requirements.txt
+  - conda install --yes --file=requirements.txt
   #- pip install -r requirements/tests-pypi.txt
   - make
 
