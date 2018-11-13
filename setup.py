@@ -44,10 +44,10 @@ class PathConfigurator(object):
 libdir = "lib/src/"
 includes = [libdir]
 
-if IS_WINDOWS:
-    includes = [libdir, "C:/projects/deploid-py/lib/src/", "C:/projects/deploid-py/lib/src/lasso/", "C:/projects/deploid-py/lib/src/random/",
-                "C:/projects/deploid-py/lib/src/gzstream/", "C:/projects/deploid-py/lib/src/codeCogs/", "C:/projects/deploid-py/lib/src/debug/",
-                "C:/projects/deploid-py/lib/src/export/"]
+#if IS_WINDOWS:
+    #includes = [libdir, "C:/projects/deploid-py/lib/src/", "C:/projects/deploid-py/lib/src/lasso/", "C:/projects/deploid-py/lib/src/random/",
+                #"C:/projects/deploid-py/lib/src/gzstream/", "C:/projects/deploid-py/lib/src/codeCogs/", "C:/projects/deploid-py/lib/src/debug/",
+                #"C:/projects/deploid-py/lib/src/export/"]
 
 
 lasso_dir = "lasso/"
@@ -110,9 +110,16 @@ _dEploid_module = Extension(
     undef_macros=["NDEBUG"],
     define_macros=[("VERSION", vv), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
-    include_dirs=["lib/"] + includes + configurator.include_dirs,
+    include_dirs=["lib/"] + includes + [
+        os.path.join(libdir, lasso_dir)] + [
+        os.path.join(libdir, random_dir)] + [
+        os.path.join(libdir, gzstream_dir)] + [
+        os.path.join(libdir, codeCogs_dir)] + [
+        os.path.join(libdir, dbg_dir)] + [
+        os.path.join(libdir, export_dir)] + configurator.include_dirs,
     #library_dirs=configurator.library_dirs,
 )
+
 
 setup(
     name="dEploid",
