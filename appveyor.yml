@@ -48,6 +48,7 @@ install:
   - cmake --build . --config %CONFIGURATION% --target install
   - dir ..\myinstall\
   - cd C:\projects\deploid-py
+  - dir lib\src\
   - dir lib\src\lasso\
 
 build: false

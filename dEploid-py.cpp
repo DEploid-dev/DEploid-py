@@ -442,7 +442,7 @@ PyInit__dEploid(void)
 #define INITERROR return
 
 void
-init_dEploid(void)
+init__dEploid(void)
 #endif
 {
 #if PY_MAJOR_VERSION >= 3
