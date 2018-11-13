@@ -45,9 +45,9 @@ libdir = "lib/src/"
 includes = [libdir]
 
 if IS_WINDOWS:
-    includes = [libdir, "C:\\projects\\deploid-py\\lib\\src\\", "C:\\projects\\deploid-py\\lib\\src\\lasso\\", "C:\\projects\\deploid-py\\lib\\src\\random\\",
-                "C:\\projects\\deploid-py\\lib\\src\\gzstream\\", "C:\\projects\\deploid-py\\lib\\src\\codeCogs\\", "C:\\projects\\deploid-py\\lib\\src\\debug\\",
-                "C:\\projects\\deploid-py\\lib\\src\\export\\"]
+    includes = [libdir, "C:/projects/deploid-py/lib/src/", "C:/projects/deploid-py/lib/src/lasso/", "C:/projects/deploid-py/lib/src/random/",
+                "C:/projects/deploid-py/lib/src/gzstream/", "C:/projects/deploid-py/lib/src/codeCogs/", "C:/projects/deploid-py/lib/src/debug/",
+                "C:/projects/deploid-py/lib/src/export/"]
 
 
 lasso_dir = "lasso/"
