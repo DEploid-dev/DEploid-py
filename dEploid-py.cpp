@@ -425,6 +425,32 @@ out:
 }
 
 
+static PyObject *
+mcmcChain_get_hap(McmcSampleStruct* self)
+{
+    PyObject *ret = NULL;
+    if (mcmcChain_check_state(self) != 0) {
+        goto out;
+    }
+    ret = matrixToListList_Double(self->mcmcSample->hap);
+out:
+    return ret;
+}
+
+
+static PyObject *
+mcmcChain_get_llk(McmcSampleStruct* self)
+{
+    PyObject *ret = NULL;
+    if (mcmcChain_check_state(self) != 0) {
+        goto out;
+    }
+    ret = vectorToList_Double(self->mcmcSample->sumLLKs);
+out:
+    return ret;
+}
+
+
 static PyMemberDef mcmcChain_members[] = {
     {NULL}  /* Sentinel */
 };
@@ -433,6 +459,10 @@ static PyMemberDef mcmcChain_members[] = {
 static PyMethodDef mcmcChain_methods[] = {
     {"get_proportions", (PyCFunction) mcmcChain_get_proportions, METH_NOARGS,
             "Returns proportion mcmc samples." },
+    {"get_hap", (PyCFunction) mcmcChain_get_hap, METH_NOARGS,
+            "Returns haplotypes of last iteration of mcmc samples." },
+    {"get_llk", (PyCFunction) mcmcChain_get_llk, METH_NOARGS,
+            "Returns likelihood chain of mcmc samples." },
     {NULL}  /* Sentinel */
 };
 
