@@ -129,7 +129,7 @@ _dEploid_module = Extension(
     extra_compile_args=cpp11option,
     extra_link_args=['-lz'],
     #libraries=['z'],
-    undef_macros=["NDEBUG"],
+    #undef_macros=["NDEBUG"],
     define_macros=[("VERSION", vv), ("DEPLOIDVERSION", dEploid_v),
                    ("LASSOVERSION", lasso_v), ("COMPILEDATE", compileData)],
     include_dirs=[get_pybind_include(),
