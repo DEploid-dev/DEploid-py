@@ -135,7 +135,7 @@ PyObject* vectorToList_Str(const vector<string> &data) {
 
 
 /*===================================================================
- * VcfReaderPy
+ * VcfStruct
  *===================================================================
  */
 
@@ -143,22 +143,22 @@ typedef struct {
     PyObject_HEAD
     bool locked;
     VcfReader *vcfreader;
-} VcfReaderPy;
+} VcfStruct;
 
 
 static int
-VcfReaderPy_check_state(VcfReaderPy *self)
+VcfStruct_check_state(VcfStruct *self)
 {
     int ret = 0;
     if (self->vcfreader == NULL) {
-        PyErr_SetString(PyExc_SystemError, "VcfReaderPy not initialised");
+        PyErr_SetString(PyExc_SystemError, "VcfStruct not initialised");
         ret = -1;
     }
     return ret;
 }
 
 static void
-VcfReaderPy_dealloc(VcfReaderPy* self)
+VcfStruct_dealloc(VcfStruct* self)
 {
     if (self->vcfreader != NULL) {
         //delete self->vcfreader;
@@ -170,7 +170,7 @@ VcfReaderPy_dealloc(VcfReaderPy* self)
 }
 
 static int
-VcfReaderPy_init(VcfReaderPy *self, PyObject *args)
+VcfStruct_init(VcfStruct *self, PyObject *args)
 {
     int ret = -1;
     int err;
@@ -229,10 +229,10 @@ VcfReaderPy_init(VcfReaderPy *self, PyObject *args)
 
 
 static PyObject *
-VcfReaderPy_get_vcfheader(VcfReaderPy *self)
+VcfStruct_get_vcfheader(VcfStruct *self)
 {
     PyObject *ret = NULL;
-    if (VcfReaderPy_check_state(self) != 0) {
+    if (VcfStruct_check_state(self) != 0) {
         goto out;
     }
     ret = vectorToList_Str(self->vcfreader->headerLines);
@@ -242,10 +242,10 @@ out:
 
 
 static PyObject *
-VcfReaderPy_get_vqslod(VcfReaderPy *self)
+VcfStruct_get_vqslod(VcfStruct *self)
 {
     PyObject *ret = NULL;
-    if (VcfReaderPy_check_state(self) != 0) {
+    if (VcfStruct_check_state(self) != 0) {
         goto out;
     }
     ret = vectorToList_Double(self->vcfreader->vqslod);
@@ -255,10 +255,10 @@ out:
 
 
 static PyObject *
-VcfReaderPy_get_refcount(VcfReaderPy *self)
+VcfStruct_get_refcount(VcfStruct *self)
 {
     PyObject *ret = NULL;
-    if (VcfReaderPy_check_state(self) != 0) {
+    if (VcfStruct_check_state(self) != 0) {
         goto out;
     }
     ret = vectorToList_Double(self->vcfreader->refCount);
@@ -268,10 +268,10 @@ out:
 
 
 static PyObject *
-VcfReaderPy_get_altcount(VcfReaderPy *self)
+VcfStruct_get_altcount(VcfStruct *self)
 {
     PyObject *ret = NULL;
-    if (VcfReaderPy_check_state(self) != 0) {
+    if (VcfStruct_check_state(self) != 0) {
         goto out;
     }
     ret = vectorToList_Double(self->vcfreader->altCount);
@@ -280,19 +280,19 @@ out:
 }
 
 
-static PyMemberDef VcfReaderPy_members[] = {
+static PyMemberDef VcfStruct_members[] = {
     {NULL}  /* Sentinel */
 };
 
 
-static PyMethodDef VcfReaderPy_methods[] = {
-    {"get_vcfheader", (PyCFunction) VcfReaderPy_get_vcfheader, METH_NOARGS,
+static PyMethodDef VcfStruct_methods[] = {
+    {"get_vcfheader", (PyCFunction) VcfStruct_get_vcfheader, METH_NOARGS,
             "Returns the VCF header as plain text." },
-    {"get_refCount", (PyCFunction) VcfReaderPy_get_refcount, METH_NOARGS,
+    {"get_refCount", (PyCFunction) VcfStruct_get_refcount, METH_NOARGS,
             "Returns VCF reference allele count." },
-    {"get_altCount", (PyCFunction) VcfReaderPy_get_altcount, METH_NOARGS,
+    {"get_altCount", (PyCFunction) VcfStruct_get_altcount, METH_NOARGS,
             "Returns VCF alternative allele count." },
-    {"get_vqslod", (PyCFunction) VcfReaderPy_get_vqslod, METH_NOARGS,
+    {"get_vqslod", (PyCFunction) VcfStruct_get_vqslod, METH_NOARGS,
             "Returns VCF SNP VQSLOD scores." },
     {NULL}  /* Sentinel */
 };
@@ -301,9 +301,9 @@ static PyMethodDef VcfReaderPy_methods[] = {
 static PyTypeObject Vcf = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "_dEploid.Vcf",             /* tp_name */
-    sizeof(VcfReaderPy),             /* tp_basicsize */
+    sizeof(VcfStruct),             /* tp_basicsize */
     0,                         /* tp_itemsize */
-    (destructor)VcfReaderPy_dealloc, /* tp_dealloc */
+    (destructor)VcfStruct_dealloc, /* tp_dealloc */
     0,                         /* tp_print */
     0,                         /* tp_getattr */
     0,                         /* tp_setattr */
@@ -319,22 +319,22 @@ static PyTypeObject Vcf = {
     0,                         /* tp_setattro */
     0,                         /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT,        /* tp_flags */
-    "VcfReaderPy objects",           /* tp_doc */
+    "VcfStruct objects",           /* tp_doc */
     0,                     /* tp_traverse */
     0,                     /* tp_clear */
     0,                     /* tp_richcompare */
     0,                     /* tp_weaklistoffset */
     0,                    /* tp_iter */
     0, /* tp_iternext */
-    VcfReaderPy_methods,             /* tp_methods */
-    VcfReaderPy_members,             /* tp_members */
+    VcfStruct_methods,             /* tp_methods */
+    VcfStruct_members,             /* tp_members */
     0,                         /* tp_getset */
     0,                         /* tp_base */
     0,                         /* tp_dict */
     0,                         /* tp_descr_get */
     0,                         /* tp_descr_set */
     0,                         /* tp_dictoffset */
-    (initproc)VcfReaderPy_init,      /* tp_init */
+    (initproc)VcfStruct_init,      /* tp_init */
     //0,                         /* tp_alloc */
     //Noddy_new,                 /* tp_new */
 };
@@ -342,7 +342,7 @@ static PyTypeObject Vcf = {
 
 
 /*
- * runDEploid
+ * mcmcChain
  * This will be equivalent to the main function in dEploid
  */
 
@@ -351,15 +351,15 @@ typedef struct {
     PyObject_HEAD
     bool locked;
     McmcSample * mcmcSample; // = new McmcSample();
-} McmcSamplesPy;
+} McmcSampleStruct;
 
 
 static int
-runDEploid_check_state(McmcSamplesPy *dEploid_result)
+mcmcChain_check_state(McmcSampleStruct *self)
 {
     int ret = 0;
-    if (dEploid_result->mcmcSample == NULL) {
-        PyErr_SetString(PyExc_SystemError, "McmcSamplesPy not initialised");
+    if (self->mcmcSample == NULL) {
+        PyErr_SetString(PyExc_SystemError, "McmcSampleStruct not initialised");
         ret = -1;
     }
     return ret;
@@ -367,20 +367,20 @@ runDEploid_check_state(McmcSamplesPy *dEploid_result)
 
 
 static void
-runDEploid_dealloc(McmcSamplesPy* dEploid_result)
+mcmcChain_dealloc(McmcSampleStruct* self)
 {
-    if (dEploid_result->mcmcSample != NULL) {
+    if (self->mcmcSample != NULL) {
         //delete self->vcfreader;
-        PyMem_Free(dEploid_result->mcmcSample);
-        dEploid_result->mcmcSample = NULL;
+        PyMem_Free(self->mcmcSample);
+        self->mcmcSample = NULL;
     }
-    Py_XDECREF(dEploid_result->mcmcSample);
-    Py_TYPE(dEploid_result)->tp_free((PyObject*)dEploid_result);
+    Py_XDECREF(self->mcmcSample);
+    Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
 
 static int
-runDEploid_init(McmcSamplesPy* dEploid_result, PyObject *args)
+mcmcChain_init(McmcSampleStruct* self, PyObject *args)
 {
     int ret = -1;
     int err;
@@ -392,7 +392,7 @@ runDEploid_init(McmcSamplesPy* dEploid_result, PyObject *args)
     if (cmd.size() > 0){
         DEploidIO dEploidIO(cmd);
 
-        dEploid_result->mcmcSample = new McmcSample();
+        self->mcmcSample = new McmcSample();
         MersenneTwister rg(dEploidIO.randomSeed());
 
         McmcMachinery mcmcMachinery(&dEploidIO.plaf_,
@@ -400,7 +400,7 @@ runDEploid_init(McmcSamplesPy* dEploid_result, PyObject *args)
                                     &dEploidIO.altCount_,
                                     dEploidIO.panel,
                                     &dEploidIO,
-                                    dEploid_result->mcmcSample,
+                                    self->mcmcSample,
                                     &rg,
                                     false);  // use IBD
         mcmcMachinery.runMcmcChain(true,     // show progress
@@ -413,36 +413,36 @@ runDEploid_init(McmcSamplesPy* dEploid_result, PyObject *args)
 
 
 static PyObject *
-runDEploid_get_proportions(McmcSamplesPy* dEploid_result)
+mcmcChain_get_proportions(McmcSampleStruct* self)
 {
     PyObject *ret = NULL;
-    if (runDEploid_check_state(dEploid_result) != 0) {
+    if (mcmcChain_check_state(self) != 0) {
         goto out;
     }
-    ret = matrixToListList_Double(dEploid_result->mcmcSample->proportion);
+    ret = matrixToListList_Double(self->mcmcSample->proportion);
 out:
     return ret;
 }
 
 
-static PyMemberDef runDEploid_members[] = {
+static PyMemberDef mcmcChain_members[] = {
     {NULL}  /* Sentinel */
 };
 
 
-static PyMethodDef runDEploid_methods[] = {
-    {"get_proportions", (PyCFunction) runDEploid_get_proportions, METH_NOARGS,
+static PyMethodDef mcmcChain_methods[] = {
+    {"get_proportions", (PyCFunction) mcmcChain_get_proportions, METH_NOARGS,
             "Returns proportion mcmc samples." },
     {NULL}  /* Sentinel */
 };
 
 
-static PyTypeObject runDEploid = {
+static PyTypeObject mcmcChain = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "_dEploid.runDEploid",             /* tp_name */
-    sizeof(McmcSamplesPy),             /* tp_basicsize */
+    "_dEploid.mcmcChain",             /* tp_name */
+    sizeof(McmcSampleStruct),             /* tp_basicsize */
     0,                         /* tp_itemsize */
-    (destructor)runDEploid_dealloc, /* tp_dealloc */
+    (destructor)mcmcChain_dealloc, /* tp_dealloc */
     0,                         /* tp_print */
     0,                         /* tp_getattr */
     0,                         /* tp_setattr */
@@ -458,22 +458,22 @@ static PyTypeObject runDEploid = {
     0,                         /* tp_setattro */
     0,                         /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT,        /* tp_flags */
-    "McmcSamplesPy objects",           /* tp_doc */
+    "McmcSampleStruct objects",           /* tp_doc */
     0,                     /* tp_traverse */
     0,                     /* tp_clear */
     0,                     /* tp_richcompare */
     0,                     /* tp_weaklistoffset */
     0,                    /* tp_iter */
     0, /* tp_iternext */
-    runDEploid_methods,             /* tp_methods */
-    runDEploid_members,             /* tp_members */
+    mcmcChain_methods,             /* tp_methods */
+    mcmcChain_members,             /* tp_members */
     0,                         /* tp_getset */
     0,                         /* tp_base */
     0,                         /* tp_dict */
     0,                         /* tp_descr_get */
     0,                         /* tp_descr_set */
     0,                         /* tp_dictoffset */
-    (initproc)runDEploid_init,      /* tp_init */
+    (initproc)mcmcChain_init,      /* tp_init */
     //0,                         /* tp_alloc */
     //Noddy_new,                 /* tp_new */
 };
@@ -566,13 +566,13 @@ init__dEploid(void)
     PyModule_AddObject(module, "Vcf", (PyObject *) &Vcf);
 
 
-    /* runDEploid type */
-    runDEploid.tp_new = PyType_GenericNew;
-    if (PyType_Ready(&runDEploid) < 0) {
+    /* mcmcChain type */
+    mcmcChain.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&mcmcChain) < 0) {
         INITERROR;
     }
-    Py_INCREF(&runDEploid);
-    PyModule_AddObject(module, "runDEploid", (PyObject *) &runDEploid);
+    Py_INCREF(&mcmcChain);
+    PyModule_AddObject(module, "mcmcChain", (PyObject *) &mcmcChain);
 
 #if PY_MAJOR_VERSION >= 3
     return module;
