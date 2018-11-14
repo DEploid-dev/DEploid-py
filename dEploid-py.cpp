@@ -183,47 +183,16 @@ VcfStruct_init(VcfStruct *self, PyObject *args)
         return ret;
     }
     std::string filename(s);
-    if (filename.size() > 0){
+
+    try {
         self->vcfreader = new VcfReader(filename);
         self->vcfreader->finalize();
+    } catch (const exception &e) {
+        PyErr_SetString(PyExc_SystemError, e.what());
+        ret = -1;
+        return ret;
     }
-    //static char *kwlist[] = {"tree_sequence", "ploidy", "contig_id", NULL};
-    //unsigned int ploidy = 1;
-    //const char *contig_id = "1";
-    //TreeSequence *tree_sequence;
-
-    //self->vcf_converter = NULL;
-    //self->tree_sequence = NULL;
-    //if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|Is", kwlist,
-            //&TreeSequenceType, &tree_sequence, &ploidy, &contig_id)) {
-        //goto out;
-    //}
-    //self->tree_sequence = tree_sequence;
-    //Py_INCREF(self->tree_sequence);
-    //if (TreeSequence_check_tree_sequence(self->tree_sequence) != 0) {
-        //goto out;
-    //}
-    //if (ploidy < 1) {
-        //PyErr_SetString(PyExc_ValueError, "Ploidy must be >= 1");
-        //goto out;
-    //}
-    //if (strlen(contig_id) == 0) {
-        //PyErr_SetString(PyExc_ValueError, "contig_id cannot be the empty string");
-        //goto out;
-    //}
-    //self->vcf_converter = PyMem_Malloc(sizeof(vcf_converter_t));
-    //if (self->vcf_converter == NULL) {
-        //PyErr_NoMemory();
-        //goto out;
-    //}
-    //err = vcf_converter_alloc(self->vcf_converter,
-            //self->tree_sequence->tree_sequence, ploidy, contig_id);
-    //if (err != 0) {
-        //handle_library_error(err);
-        //goto out;
-    //}
     ret = 0;
-//out:
     return ret;
 }
 
@@ -390,22 +359,26 @@ mcmcChain_init(McmcSampleStruct* self, PyObject *args)
     ok = PyArg_ParseTuple(args, "s", &s);
     std::string cmd(s);
     if (cmd.size() > 0){
-        DEploidIO dEploidIO(cmd);
+        try {
+            DEploidIO dEploidIO(cmd);
+            self->mcmcSample = new McmcSample();
+            MersenneTwister rg(dEploidIO.randomSeed());
 
-        self->mcmcSample = new McmcSample();
-        MersenneTwister rg(dEploidIO.randomSeed());
-
-        McmcMachinery mcmcMachinery(&dEploidIO.plaf_,
-                                    &dEploidIO.refCount_,
-                                    &dEploidIO.altCount_,
-                                    dEploidIO.panel,
-                                    &dEploidIO,
-                                    self->mcmcSample,
-                                    &rg,
-                                    false);  // use IBD
-        mcmcMachinery.runMcmcChain(true,     // show progress
-                                   false);   // use IBD
-
+            McmcMachinery mcmcMachinery(&dEploidIO.plaf_,
+                                        &dEploidIO.refCount_,
+                                        &dEploidIO.altCount_,
+                                        dEploidIO.panel,
+                                        &dEploidIO,
+                                        self->mcmcSample,
+                                        &rg,
+                                        false);  // use IBD
+            mcmcMachinery.runMcmcChain(true,     // show progress
+                                       false);   // use IBD
+        } catch (const exception &e) {
+            PyErr_SetString(PyExc_SystemError, e.what());
+            ret = -1;
+            return ret;
+        }
     }
     ret = 0;
     return ret;
