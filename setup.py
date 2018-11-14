@@ -3,6 +3,7 @@
 #from __future__ import division
 #from __future__ import print_function
 
+import zlib
 import datetime
 #import subprocess
 import platform
