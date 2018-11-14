@@ -5,10 +5,11 @@
 #include <stdexcept>
 
 #include "lib/src/vcfReader.hpp"
-
+#include "lib/src/mcmc.hpp"
+#include "lib/src/dEploidIO.hpp"
 
 #define MODULE_DOC \
-"Low level interface for msprime"
+"Low level interface for dEploid"
 
 
 //typedef struct {
@@ -160,6 +161,10 @@ VcfReaderPy_init(VcfReaderPy *self, PyObject *args)
     int ok;
     char *s;
     ok = PyArg_ParseTuple(args, "s", &s);
+    if (ok == 0){ // 0 is false/fail, 1 is success
+        PyErr_SetString(PyExc_SystemError, "Bad name");
+        return ret;
+    }
     std::string filename(s);
     if (filename.size() > 0){
         self->vcfreader = new VcfReader(filename);
@@ -278,7 +283,7 @@ static PyMethodDef VcfReaderPy_methods[] = {
 
 static PyTypeObject Vcf = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "_msprime.VcfReaderPy",             /* tp_name */
+    "_dEploid.Vcf",             /* tp_name */
     sizeof(VcfReaderPy),             /* tp_basicsize */
     0,                         /* tp_itemsize */
     (destructor)VcfReaderPy_dealloc, /* tp_dealloc */
@@ -319,11 +324,132 @@ static PyTypeObject Vcf = {
 
 
 
+/*
+ * runDEploid
+ * This will be equivalent to the main function in dEploid
+ */
 
 
+typedef struct {
+    PyObject_HEAD
+    bool locked;
+    McmcSample * mcmcSample; // = new McmcSample();
+} McmcSamplesPy;
 
 
+static int
+runDEploid_check_state(McmcSamplesPy *dEploid_result)
+{
+    int ret = 0;
+    if (dEploid_result->mcmcSample == NULL) {
+        PyErr_SetString(PyExc_SystemError, "McmcSamplesPy not initialised");
+        ret = -1;
+    }
+    return ret;
+}
 
+
+static void
+runDEploid_dealloc(McmcSamplesPy* dEploid_result)
+{
+    if (dEploid_result->mcmcSample != NULL) {
+        //delete self->vcfreader;
+        PyMem_Free(dEploid_result->mcmcSample);
+        dEploid_result->mcmcSample = NULL;
+    }
+    Py_XDECREF(dEploid_result->mcmcSample);
+    Py_TYPE(dEploid_result)->tp_free((PyObject*)dEploid_result);
+}
+
+
+static int
+runDEploid_init(McmcSamplesPy* dEploid_result, PyObject *args)
+{
+    int ret = -1;
+    int err;
+
+    int ok;
+    char *s;
+    ok = PyArg_ParseTuple(args, "s", &s);
+    std::string cmd(s); // split the command to tuples
+    std::cout << cmd << std::endl;
+    if (cmd.size() > 0){
+        DEploidIO dEploidIO(cmd);
+
+        //dEploid_result->vcfreader = new VcfReader(filename);
+        //dEploid_result->vcfreader->finalize();
+    }
+    ret = 0;
+//out:
+    return ret;
+}
+
+
+static PyObject *
+runDEploid_get_proportions(McmcSamplesPy* dEploid_result)
+{
+    PyObject *ret = NULL;
+    if (runDEploid_check_state(dEploid_result) != 0) {
+        goto out;
+    }
+    //ret = vectorToList_Double(self->vcfreader->altCount);
+out:
+    return ret;
+}
+
+
+static PyMemberDef runDEploid_members[] = {
+    {NULL}  /* Sentinel */
+};
+
+
+static PyMethodDef runDEploid_methods[] = {
+    {"get_proportions", (PyCFunction) runDEploid_get_proportions, METH_NOARGS,
+            "Returns proportion mcmc samples." },
+    {NULL}  /* Sentinel */
+};
+
+
+static PyTypeObject runDEploid = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "_dEploid.runDEploid",             /* tp_name */
+    sizeof(McmcSamplesPy),             /* tp_basicsize */
+    0,                         /* tp_itemsize */
+    (destructor)runDEploid_dealloc, /* tp_dealloc */
+    0,                         /* tp_print */
+    0,                         /* tp_getattr */
+    0,                         /* tp_setattr */
+    0,                         /* tp_reserved */
+    0,                         /* tp_repr */
+    0,                         /* tp_as_number */
+    0,                         /* tp_as_sequence */
+    0,                         /* tp_as_mapping */
+    0,                         /* tp_hash  */
+    0,                         /* tp_call */
+    0,                         /* tp_str */
+    0,                         /* tp_getattro */
+    0,                         /* tp_setattro */
+    0,                         /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT,        /* tp_flags */
+    "McmcSamplesPy objects",           /* tp_doc */
+    0,                     /* tp_traverse */
+    0,                     /* tp_clear */
+    0,                     /* tp_richcompare */
+    0,                     /* tp_weaklistoffset */
+    0,                    /* tp_iter */
+    0, /* tp_iternext */
+    runDEploid_methods,             /* tp_methods */
+    runDEploid_members,             /* tp_members */
+    0,                         /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc)runDEploid_init,      /* tp_init */
+    //0,                         /* tp_alloc */
+    //Noddy_new,                 /* tp_new */
+};
 
 
 /*
@@ -413,13 +539,13 @@ init__dEploid(void)
     PyModule_AddObject(module, "Vcf", (PyObject *) &Vcf);
 
 
-    ///* NoddyType type */
-    //NoddyType.tp_new = PyType_GenericNew;
-    //if (PyType_Ready(&NoddyType) < 0) {
-        //INITERROR;
-    //}
-    //Py_INCREF(&NoddyType);
-    //PyModule_AddObject(module, "NoddyType", (PyObject *) &NoddyType);
+    /* runDEploid type */
+    runDEploid.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&runDEploid) < 0) {
+        INITERROR;
+    }
+    Py_INCREF(&runDEploid);
+    PyModule_AddObject(module, "runDEploid", (PyObject *) &runDEploid);
 
 #if PY_MAJOR_VERSION >= 3
     return module;

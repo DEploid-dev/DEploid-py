@@ -21,3 +21,5 @@ pyplot.xlim(0, 0.9*count_max)
 pyplot.ylim(0, 0.9*count_max)
 pyplot.savefig("altVsRef.png", dpi=72)
 pyplot.close('all')
+
+ret = _dEploid.runDEploid("-vcf lib/data/testData/PG0390-C.test.vcf -plaf lib/data/testData/labStrains.test.PLAF.txt -o PG0390-CNopanel -noPanel")
