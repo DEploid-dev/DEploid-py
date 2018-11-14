@@ -88,7 +88,24 @@ extractCoverageFromVcf(PyObject *args)
 
 
 
+PyObject* matrixToListList_Double(const vector < vector<double> > &data) {
+    PyObject* listListObj = PyList_New( data.size() );
+    if (!listListObj) throw std::logic_error("Unable to allocate memory for Python list");
 
+    for (size_t i = 0; i < data.size(); i++) {
+        PyObject* listObj = PyList_New(data[i].size());
+        for (size_t ii = 0; ii < data[i].size(); ii++) {
+            PyObject *num = PyFloat_FromDouble( (double) data[i][ii]);
+            if (!num) {
+                Py_DECREF(listObj);
+                throw std::logic_error("Unable to allocate memory for Python list");
+            }
+            PyList_SET_ITEM(listObj, ii, num);
+        }
+        PyList_SET_ITEM(listListObj, i, listObj);
+    }
+    return listListObj;
+}
 
 
 PyObject* vectorToList_Double(const vector<double> &data) {
@@ -402,7 +419,7 @@ runDEploid_get_proportions(McmcSamplesPy* dEploid_result)
     if (runDEploid_check_state(dEploid_result) != 0) {
         goto out;
     }
-    //ret = vectorToList_Double(self->vcfreader->altCount);
+    ret = matrixToListList_Double(dEploid_result->mcmcSample->proportion);
 out:
     return ret;
 }
