@@ -371,16 +371,26 @@ runDEploid_init(McmcSamplesPy* dEploid_result, PyObject *args)
     int ok;
     char *s;
     ok = PyArg_ParseTuple(args, "s", &s);
-    std::string cmd(s); // split the command to tuples
-    std::cout << cmd << std::endl;
+    std::string cmd(s);
     if (cmd.size() > 0){
         DEploidIO dEploidIO(cmd);
 
-        //dEploid_result->vcfreader = new VcfReader(filename);
-        //dEploid_result->vcfreader->finalize();
+        dEploid_result->mcmcSample = new McmcSample();
+        MersenneTwister rg(dEploidIO.randomSeed());
+
+        McmcMachinery mcmcMachinery(&dEploidIO.plaf_,
+                                    &dEploidIO.refCount_,
+                                    &dEploidIO.altCount_,
+                                    dEploidIO.panel,
+                                    &dEploidIO,
+                                    dEploid_result->mcmcSample,
+                                    &rg,
+                                    false);  // use IBD
+        mcmcMachinery.runMcmcChain(true,     // show progress
+                                   false);   // use IBD
+
     }
     ret = 0;
-//out:
     return ret;
 }
 
