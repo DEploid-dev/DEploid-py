@@ -46,6 +46,7 @@ install:
   - cmake --build . --config %CONFIGURATION%
   - cmake --build . --config %CONFIGURATION% --target install
   - dir ..\myinstall\
+  - dir ..\myinstall\lib
   - cd C:\projects\deploid-py
 
   - cmd: '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
