@@ -22,7 +22,9 @@ pyplot.ylim(0, 0.9*count_max)
 pyplot.savefig("altVsRef.png", dpi=72)
 pyplot.close('all')
 
-ret = _dEploid.mcmcChain("-vcf lib/data/testData/PG0390-C.test.vcf -plaf lib/data/testData/labStrains.test.PLAF.txt -o PG0390-CNopanel -noPanel")
+ret = _dEploid.mcmcChain("-vcf lib/data/testData/PG0390-C.test.vcf \
+    -plaf lib/data/testData/labStrains.test.PLAF.txt \
+    -o PG0390-CNopanel -noPanel")
 
 pyplot.plot(ret.get_llk())
 pyplot.savefig("llk.png", dpi=72)
