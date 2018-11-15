@@ -15,6 +15,8 @@ DEploid
    installation
    Bug-report
    Citing-DEploid
+   modules
+
 ..    cppdocument
 
 

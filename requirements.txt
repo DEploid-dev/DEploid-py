@@ -1,3 +1,6 @@
+# data manipulation
+pandas
+
 # test
 nose
 
@@ -9,4 +12,3 @@ matplotlib
 
 # c++11 standard
 pybind11
-
