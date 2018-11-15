@@ -47,7 +47,7 @@ jobs:
           name: check style
           command: |
             . venv/bin/activate
-            pep8 --exclude='lib',setup.py  .
+            pep8 --exclude='lib',setup.py,docs/conf.py  .
 
       - run:
           name: build
