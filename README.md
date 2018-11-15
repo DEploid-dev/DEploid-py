@@ -2,6 +2,7 @@
 
 [![License (GPL version 3)](https://img.shields.io/badge/license-GPL%20version%203-brightgreen.svg)](http://opensource.org/licenses/GPL-3.0)
 [![Build Status](https://travis-ci.org/DEploid-dev/DEploid-py.svg?branch=master)](https://travis-ci.org/DEploid-dev/DEploid-py)
+[![Documentation Status](https://readthedocs.org/projects/deploid-py/badge/?version=latest)](https://deploid-py.readthedocs.io/en/latest/?badge=latest)
 
 DEploid Python package -- Deconvolute Mixed Genomes with Unknown Proportions
 =================
@@ -17,7 +18,7 @@ pip install dEploid
 Usage
 -----
 
-Please see the [documentation](http://deploid.readthedocs.io/en/latest/) for further details.
+Please see the [documentation](https://deploid-py.readthedocs.io/en/latest/) for further details.
 
 
 Licence
