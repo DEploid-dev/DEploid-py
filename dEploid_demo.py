@@ -8,4 +8,3 @@ ret = dEploid.mcmc.chain("-vcf lib/data/testData/PG0390-C.test.vcf \
 pyplot.plot(ret.get_llk())
 pyplot.savefig("llk.png", dpi=72)
 pyplot.close('all')
-
