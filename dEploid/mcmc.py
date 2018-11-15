@@ -1,6 +1,7 @@
 import _dEploid
 from pandas import DataFrame
 
+
 class chain(object):
     def __init__(self, args):
         self.mcmcSamples = _dEploid.mcmcChain(args)
@@ -9,7 +10,7 @@ class chain(object):
         """
         """
         df = DataFrame(self.mcmcSamples.get_proportions())
-        df.columns = ["p" +str(i+1) for i in range(len(df.columns))]
+        df.columns = ["p" + str(i+1) for i in range(len(df.columns))]
         return df
 
     def get_llk(self):
@@ -21,6 +22,5 @@ class chain(object):
         """
         """
         df = DataFrame(self.mcmcSamples.get_hap())
-        df.columns = ["h" +str(i+1) for i in range(len(df.columns))]
+        df.columns = ["h" + str(i+1) for i in range(len(df.columns))]
         return df
-
