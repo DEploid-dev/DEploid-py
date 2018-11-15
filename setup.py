@@ -143,13 +143,16 @@ _dEploid_module = Extension(
     library_dirs=configurator.library_dirs,
 )
 
+with open("README.rst") as f:
+    long_description = f.read()
 
 setup(
     name="dEploid",
     packages=['dEploid'],
     description="dEploid CPP module",
+    long_description=long_description,
     author="Joe Zhu",
-    version="0.6.0a",
+    version="0.6.0a1",
     author_email="joe.zhu@bdi.ox.ac.uk",
     url="https://github.com/DEploid-dev/DEploid-py",
     ext_modules=[_dEploid_module],
@@ -171,7 +174,6 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Operating System :: POSIX",
         "Operating System :: MacOS :: MacOS X",
-        "Operating System :: Microsoft :: Windows",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
